@@ -67,45 +67,6 @@
                 :limit.sync="parameterDto.size"
                 @pagination="loadPageTableList" />
 
-    <el-dialog :title="textMap[dialogStatus]"
-               :visible.sync="dialogFormVisible">
-      <el-form ref="submitForm"
-               :model="submitForm"
-               label-width="100px"
-               class="organizationForm"
-               style="width: 400px; margin-left:50px;">
-        <el-form-item label="设备编码"
-                      prop="deviceCode">
-          <el-input v-model.trim="submitForm.deviceCode"
-                    placeholder="输入设备编码"
-                    maxlength="32" />
-        </el-form-item>
-        <el-form-item label="设备名称"
-                      prop="deviceName">
-          <el-input v-model.trim="submitForm.deviceName"
-                    placeholder="输入设备名称"
-                    maxlength="32" />
-        </el-form-item>
-        <el-form-item label="设备类型"
-                      prop="deviceType">
-          <el-input v-model.trim="submitForm.deviceType"
-                    oninput="value=value.replace(/^\.+|[^\d.]/g,'')"
-                    placeholder="输入设备类型(输入编号)" />
-          <div class="sub-title"
-               style="color:red">0:辊道 1:天车 2:喷码机 3:切割机 4:举升机 5:小件分拣机器人 6:大件分拣机器人 7:沙光机 8:皮带输送线 9:入筐机器人</div>
-        </el-form-item>
-      </el-form>
-      <div slot="footer"
-           class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
-        <el-button v-if="dialogStatus=='create'"
-                   type="primary"
-                   @click="createData">{{ $t('table.confirm') }}</el-button>
-        <el-button v-else
-                   type="primary"
-                   @click="updateData">{{ $t('table.confirm') }}</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -114,12 +75,12 @@
   Auth: Lei.j1ang
   Created: 2018/1/19-14:54
 */
-import { selectDeviceList, addDevice, updateDevice, deleteDevice } from '@/api/plan/mesAdivce'
+import { selectMesAdivceList } from '@/api/plan/mesAdivce'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
-  name: 'device',
+  name: 'mesAdivce',
   components: { Pagination },
   data: () => ({
     mesAdviceList: [],
@@ -150,12 +111,13 @@ export default {
   methods: {
     loadPageTableList () {
       this.listLoading = true
-      selectDeviceList(this.parameterDto).then(response => {
+      selectMesAdivceList(this.parameterDto).then(response => {
         this.mesAdviceList = response.data
         this.total = response.count
         this.listLoading = false
       })
     },
+
     handleCreate () {
       this.deviceCode = ""
       this.deviceName = ""
@@ -163,49 +125,14 @@ export default {
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.submitForm = {}
+    },
 
-    },
-    createData () {
-      addDevice(this.submitForm).then(response => {
-        if (response.code == 200) {
-          this.$message({
-            message: '新增成功',
-            type: 'success'
-          })
-          this.loadPageTableList();
-          this.$refs['submitForm'].resetFields()
-          this.dialogFormVisible = false
-        } else {
-          this.$message({
-            message: '新增失败',
-            type: 'error'
-          })
-        }
-      })
-    },
     handleUpdate (row) {
       this.submitForm = Object.assign({}, row) //Object.assign方法用于对象的合并 复制到目标对象
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
     },
-    updateData () {
-      updateDevice(this.submitForm).then(response => {
-        if (response.code == 200) {
-          this.$message({
-            message: '修改成功',
-            type: 'success'
-          })
-          this.loadPageTableList();
-          this.$refs['submitForm'].resetFields()
-          this.dialogFormVisible = false
-        } else {
-          this.$message({
-            message: '修改失败',
-            type: 'error'
-          })
-        }
-      })
-    },
+
     handleDelete (id) {
       this.$confirm(
         '删除该设备, 是否继续?',

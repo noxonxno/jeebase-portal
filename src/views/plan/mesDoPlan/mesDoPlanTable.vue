@@ -7,7 +7,7 @@
                class="demo-form-inline"
                @keyup.enter.native="loadPageTableList">
         <el-input v-model="parameterDto.deviceName"
-                  placeholder="MES通知总计划数"
+                  placeholder="MES可执行计划编号"
                   style="width: 150px;"
                   class="filter-item"
                   maxlength="32" />
@@ -20,12 +20,12 @@
                    style="margin-left: 10px;"
                    type="primary"
                    icon="el-icon-edit"
-                   @click="handleCreate(false)">导入</el-button>
+                   @click="loadPageTableList(false)">导入</el-button>
       </el-form>
 
     </div>
     <!-- 数据table -->
-    <el-table :data="mesAdviceList"
+    <el-table :data="mesDoPlanList"
               row-key="id"
               border>
       <el-table-column label="创建时间">
@@ -61,7 +61,7 @@
         <template slot-scope="scope">
           <el-button type="primary"
                      size="mini"
-                     @click="handleCreate(scope.row)">错误上报
+                     @click="loadPageTableList(scope.row)">错误上报
           </el-button>
         </template>
       </el-table-column>
@@ -121,15 +121,15 @@
   Auth: Lei.j1ang
   Created: 2018/1/19-14:54
 */
-import { selectDeviceList, addDevice, updateDevice, deleteDevice } from '@/api/plan/mesAdivce'
+import { selectMesDoPlanList } from '@/api/plan/mesDoPlan'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
-  name: 'device',
+  name: 'mesDoPlanTable',
   components: { Pagination },
   data: () => ({
-    mesAdviceList: [],
+    mesDoPlanList: [],
     total: 0,
     parameterDto: {
       deviceName: "",
@@ -157,96 +157,12 @@ export default {
   methods: {
     loadPageTableList () {
       this.listLoading = true
-      selectDeviceList(this.parameterDto).then(response => {
-        this.mesAdviceList = response.data
+      selectMesDoPlanList(this.parameterDto).then(response => {
+        this.mesDoPlanList = response.data
         this.total = response.count
         this.listLoading = false
       })
     },
-    handleCreate () {
-      this.deviceCode = ""
-      this.deviceName = ""
-      this.deviceState = ""
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.submitForm = {}
-
-    },
-    createData () {
-      addDevice(this.submitForm).then(response => {
-        if (response.code == 200) {
-          this.$message({
-            message: '新增成功',
-            type: 'success'
-          })
-          this.loadPageTableList();
-          this.$refs['submitForm'].resetFields()
-          this.dialogFormVisible = false
-        } else {
-          this.$message({
-            message: '新增失败',
-            type: 'error'
-          })
-        }
-      })
-    },
-    handleUpdate (row) {
-      this.submitForm = Object.assign({}, row) //Object.assign方法用于对象的合并 复制到目标对象
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-    },
-    updateData () {
-      updateDevice(this.submitForm).then(response => {
-        if (response.code == 200) {
-          this.$message({
-            message: '修改成功',
-            type: 'success'
-          })
-          this.loadPageTableList();
-          this.$refs['submitForm'].resetFields()
-          this.dialogFormVisible = false
-        } else {
-          this.$message({
-            message: '修改失败',
-            type: 'error'
-          })
-        }
-      })
-    },
-    handleDelete (id) {
-      this.$confirm(
-        '删除该设备, 是否继续?',
-        '提示',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      ).then(() => {
-        this.listLoading = true
-        deleteDevice(id).then(response => {
-          if (response.code == 200) {
-            this.listLoading = false
-            this.loadPageTableList();
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-          } else {
-            this.$message({
-              message: '删除失败',
-              type: 'error'
-            })
-          }
-        })
-      })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
-        })
-    }
   }
 }
 </script>

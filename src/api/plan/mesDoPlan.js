@@ -1,12 +1,11 @@
 import request from '@/utils/request'
 
-export function selectMesAdivceist (data) {
+export function selectMesDoPlanList (data) {
   return request({
-    url: '/plan/mesAdivce/list',
+    url: '/plan/mesDoPlan/list',
     method: 'get',
     params: data
   })
 }
-
 
 
