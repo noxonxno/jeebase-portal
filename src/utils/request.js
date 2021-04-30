@@ -46,7 +46,13 @@ service.interceptors.response.use(
     const res = response.data
     if (res.code !== 200) {
       // 90000002：登录超时
-      if (res.code === 90000002) {
+      if (res.code === 7758258) {
+        Message({
+          message: '不好意思，您的权限不足',
+          type: 'error',
+          duration: 5 * 1000
+        })
+      } else if (res.code === 90000002) {
         Message({
           message: '登录超时，请重新登录',
           type: 'error',

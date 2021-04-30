@@ -270,6 +270,7 @@ export default {
     },
     createData() {
       this.$refs['organizationForm'].validate(valid => {
+        console.log(valid)
         if (valid) {
           createOrganization(this.organizationForm).then(response => {
             this.dialogFormVisible = false
