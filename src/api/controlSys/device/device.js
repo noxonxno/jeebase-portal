@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 export function selectDeviceList(data) {
-    return request({
-      url: '/device/deviceList',
-      method: 'get',
-      params: data
-    })
+  return request({
+    url: '/device/deviceList',
+    method: 'get',
+    params: data
+  })
 }
 
 export function addDevice(data) {

@@ -2,7 +2,7 @@
   <div class="upload-container">
     <div class="image-preview image-app-preview">
       <div v-if="!pass && progress !== 0 && progress !== 100" class="img-progress">
-        <el-progress :percentage="progress" :status="proStatus" type="circle"/>
+        <el-progress :percentage="progress" :status="proStatus" type="circle" />
       </div>
       <div v-if="!(!pass && progress !== 0 && progress !== 100)" v-show="itemPicUrl.length>1" class="image-preview-wrapper">
         <video-player
@@ -12,8 +12,9 @@
           class="video-player vjs-custom-skin"
           @play="onPlayerPlay($event)"
           @pause="onPlayerPause($event)"
-          @statechanged="playerStateChanged($event)"/>
-          <!--
+          @statechanged="playerStateChanged($event)"
+        />
+        <!--
         <div class="image-preview-action">
           <i @click="rmImage" class="el-icon-delete"></i>
         </div>-->
@@ -30,8 +31,9 @@
       :on-progress="uploadOnProgress"
       class="image-uploader"
       drag
-      action="http://upload.qiniup.com">
-      <i class="el-icon-upload"/>
+      action="http://upload.qiniup.com"
+    >
+      <i class="el-icon-upload" />
       <div class="el-upload__text">将视频拖到此处，或<em>点击上传</em></div>
     </el-upload>
   </div>

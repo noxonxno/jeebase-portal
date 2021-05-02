@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 export function selectTrayList(data) {
-    return request({
-      url: '/tary/list',
-      method: 'get',
-      params: data
-    })
+  return request({
+    url: '/tary/list',
+    method: 'get',
+    params: data
+  })
 }
 
 export function addTary(data) {
@@ -32,9 +32,9 @@ export function deleteTaryById(taryId) {
 }
 
 export function batchUpdate(taryFixNum) {
-    return request({
-      url: '/tary/batchUpdate/' + taryFixNum,
-      method: 'post'
-    })
-  }
+  return request({
+    url: '/tary/batchUpdate/' + taryFixNum,
+    method: 'post'
+  })
+}
 

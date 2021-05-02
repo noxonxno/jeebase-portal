@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 export function selectLocationList(data) {
-    return request({
-      url: '/location/locationList',
-      method: 'get',
-      params: data
-    })
+  return request({
+    url: '/location/locationList',
+    method: 'get',
+    params: data
+  })
 }
 
 export function addLocation(data) {

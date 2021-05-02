@@ -15,7 +15,8 @@
         :action="uploadAction"
         :limit="limit"
         class="editor-slide-upload"
-        list-type="picture-card">
+        list-type="picture-card"
+      >
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
       <el-button @click="dialogVisible = false">取 消</el-button>

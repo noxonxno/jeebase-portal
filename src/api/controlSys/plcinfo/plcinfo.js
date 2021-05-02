@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 export function selectListPlcInfo(data) {
-    return request({
-      url: '/plc/listPlcInfo',
-      method: 'get',
-      params: data
-    })
+  return request({
+    url: '/plc/listPlcInfo',
+    method: 'get',
+    params: data
+  })
 }
 
 export function addPlcInfo(data) {

@@ -2,12 +2,18 @@
   <div class="app-container">
     <div class="filter-container">
       <el-form :inline="true" :model="parameterDto" class="demo-form-inline" @keyup.enter.native="loadPageTableList">
-          <el-input v-model="parameterDto.taryInfo" placeholder="托盘信息" style="width: 150px;" class="filter-item" maxlength="32" />
-          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="loadPageTableList">搜索</el-button>
-          <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate(false)">添加</el-button>
-          <el-input v-model="taryFixNum" autocomplete="off" placeholder="设置托盘阈值" 
-              oninput ="value=value.replace(/[^\d]/g,'')"   class="filter-item" style="width: 150px; margin-left: 100px" ></el-input>
-          <el-button class="filter-item" style="margin-left: 10px;" @click="updateTaryFixNum" type="primary" >确定</el-button>
+        <el-input v-model="parameterDto.taryInfo" placeholder="托盘信息" style="width: 150px;" class="filter-item" maxlength="32" />
+        <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="loadPageTableList">搜索</el-button>
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate(false)">添加</el-button>
+        <el-input
+          v-model="taryFixNum"
+          autocomplete="off"
+          placeholder="设置托盘阈值"
+          oninput="value=value.replace(/[^\d]/g,'')"
+          class="filter-item"
+          style="width: 150px; margin-left: 100px"
+        />
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="updateTaryFixNum">确定</el-button>
       </el-form>
 
     </div>
@@ -24,9 +30,9 @@
         </template>
       </el-table-column>
       <el-table-column label="托盘状态">
-         <template  slot-scope="scope">
-                {{ scope.row.taryState==0 ?"正常":"异常"}}
-          </template>
+        <template  slot-scope="scope">
+          {{ scope.row.taryState==0 ?"正常":"异常" }}
+        </template>
       </el-table-column>
       <el-table-column label="使用次数标记">
         <template slot-scope="scope">
@@ -67,9 +73,7 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0"  :total="total"  :page.sync="parameterDto.current" :limit.sync="parameterDto.size" @pagination="loadPageTableList" />
-
-
+    <pagination v-show="total>0" :total="total" :page.sync="parameterDto.current" :limit.sync="parameterDto.size" @pagination="loadPageTableList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="submitForm" :model="submitForm" label-width="100px" class="organizationForm" style="width: 400px; margin-left:50px;">
@@ -80,10 +84,10 @@
           <el-input v-model.trim="submitForm.taryInfo" placeholder="输入托盘信息" maxlength="32" />
         </el-form-item>
         <el-form-item label="托盘使用次数" prop="taryNum">
-          <el-input v-model.trim="submitForm.taryNum" oninput="value=value.replace(/^\.+|[^\d.]/g,'')"  placeholder="输入托盘使用次数" />
+          <el-input v-model.trim="submitForm.taryNum" oninput="value=value.replace(/^\.+|[^\d.]/g,'')" placeholder="输入托盘使用次数" />
         </el-form-item>
         <el-form-item label="托盘使用阈值" prop="taryFixNum">
-          <el-input v-model.trim="submitForm.taryFixNum"  oninput="value=value.replace(/^\.+|[^\d.]/g,'')" placeholder="输入托盘使用阈值" />
+          <el-input v-model.trim="submitForm.taryFixNum" oninput="value=value.replace(/^\.+|[^\d.]/g,'')" placeholder="输入托盘使用阈值" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -94,7 +98,6 @@
     </el-dialog>
   </div>
 
-  
 </template>
 
 <script>
@@ -102,102 +105,101 @@
   Auth: Lei.j1ang
   Created: 2018/1/19-14:54
 */
-import { selectTrayList, addTary, updateTary, deleteTaryById, batchUpdate} from '@/api/controlSys/tary/tary'
+import { selectTrayList, addTary, updateTary, deleteTaryById, batchUpdate } from '@/api/controlSys/tary/tary'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
-  name: 'tary',
+  name: 'Tary',
   components: { Pagination },
+  directives: {
+    waves
+  },
   data: () => ({
-    taryFixNum: "",
+    taryFixNum: '',
     taryList: [],
     total: 0,
-    parameterDto: { 
-      taryInfo: "",
+    parameterDto: {
+      taryInfo: '',
       current: 1,
-      size: 10,
+      size: 10
     },
     textMap: {
-        update: '编辑',
-        create: '添加'
+      update: '编辑',
+      create: '添加'
     },
     dialogStatus: '',
     dialogFormVisible: false,
     submitForm: {
-      taryInfo: "",
-      taryNum: "",
-      taryFixNum: "",
-      locationMaxNum: "",
-      locationTotal: "",
+      taryInfo: '',
+      taryNum: '',
+      taryFixNum: '',
+      locationMaxNum: '',
+      locationTotal: ''
     }
   }),
-  directives: {
-    waves
-  },
   created() {
-  this.loadPageTableList();
+    this.loadPageTableList()
   },
   methods: {
-      loadPageTableList(){
-        this.listLoading = true
-        selectTrayList(this.parameterDto).then(response => {
-          this.taryList = response.data
-          this.total = response.count
-          this.listLoading = false
+    loadPageTableList() {
+      this.listLoading = true
+      selectTrayList(this.parameterDto).then(response => {
+        this.taryList = response.data
+        this.total = response.count
+        this.listLoading = false
+      })
+    },
+    handleCreate() {
+      this.taryInfo = ''
+      this.taryNum = ''
+      this.taryFixNum = ''
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      this.submitForm = {}
+    },
+    createData() {
+      addTary(this.submitForm).then(response => {
+        if (response.code == 200) {
+          this.$message({
+            message: '新增成功',
+            type: 'success'
           })
-      },
-      handleCreate() {
-        this.taryInfo = ""
-        this.taryNum = ""
-        this.taryFixNum = ""
-        this.dialogStatus = 'create'
-        this.dialogFormVisible = true
-        this.submitForm = {}
-        
-      },
-      createData() {
-        addTary(this.submitForm).then(response => {
-           if(response.code==200){
-              this.$message({
-                  message: '新增成功',
-                  type: 'success'
-              })
-              this.loadPageTableList();
-              this.$refs['submitForm'].resetFields()
-              this.dialogFormVisible = false
-           }else{
-              this.$message({
-                  message: '新增失败',
-                  type: 'error'
-              })
-           }
-        })
-      },
-      handleUpdate(row) {
-        this.submitForm = Object.assign({}, row) //Object.assign方法用于对象的合并 复制到目标对象
-          this.dialogStatus = 'update'
-          this.dialogFormVisible = true
-      },
-      updateData() {
-         updateTary(this.submitForm).then(response => {
-           if(response.code==200){
-              this.$message({
-                  message: '修改成功',
-                  type: 'success'
-              })
-              this.loadPageTableList();
-              this.$refs['submitForm'].resetFields()
-              this.dialogFormVisible = false
-           }else{
-              this.$message({
-                  message: '修改失败',
-                  type: 'error'
-              })
-           }
-        })
-      },
-      handleDelete(id) {
+          this.loadPageTableList()
+          this.$refs['submitForm'].resetFields()
+          this.dialogFormVisible = false
+        } else {
+          this.$message({
+            message: '新增失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    handleUpdate(row) {
+      this.submitForm = Object.assign({}, row) // Object.assign方法用于对象的合并 复制到目标对象
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+    },
+    updateData() {
+      updateTary(this.submitForm).then(response => {
+        if (response.code == 200) {
+          this.$message({
+            message: '修改成功',
+            type: 'success'
+          })
+          this.loadPageTableList()
+          this.$refs['submitForm'].resetFields()
+          this.dialogFormVisible = false
+        } else {
+          this.$message({
+            message: '修改失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    handleDelete(id) {
       this.$confirm(
         '删除该托盘, 是否继续?',
         '提示',
@@ -207,23 +209,23 @@ export default {
           type: 'warning'
         }
       ).then(() => {
-          this.listLoading = true
-          deleteTaryById(id).then(response => {
-            if(response.code==200){
-                this.listLoading = false
-                this.loadPageTableList();
-                this.$message({
-                  type: 'success',
-                  message: '删除成功!'
-                })
-            }else{
-               this.$message({
-                  message: '删除失败',
-                  type: 'error'
-              })
-            }
-          })
+        this.listLoading = true
+        deleteTaryById(id).then(response => {
+          if (response.code == 200) {
+            this.listLoading = false
+            this.loadPageTableList()
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          } else {
+            this.$message({
+              message: '删除失败',
+              type: 'error'
+            })
+          }
         })
+      })
         .catch(() => {
           this.$message({
             type: 'info',
@@ -231,13 +233,13 @@ export default {
           })
         })
     },
-    updateTaryFixNum(){
-      var fixNum = this.taryFixNum;
+    updateTaryFixNum() {
+      var fixNum = this.taryFixNum
       console.log(fixNum)
-      if(fixNum <= 0){
+      if (fixNum <= 0) {
         this.$message({
-              type: 'error',
-              message: '阈值必须大于0'
+          type: 'error',
+          message: '阈值必须大于0'
         })
         return
       }
@@ -250,17 +252,17 @@ export default {
           type: 'warning'
         }
       ).then(() => {
-          this.listLoading = true
-          batchUpdate(fixNum).then(() => {
-            this.listLoading = false
-            this.loadPageTableList()
-            this.taryFixNum = ''
-            this.$message({
-              type: 'success',
-              message: '修改成功!'
-            })
+        this.listLoading = true
+        batchUpdate(fixNum).then(() => {
+          this.listLoading = false
+          this.loadPageTableList()
+          this.taryFixNum = ''
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
           })
         })
+      })
         .catch(() => {
           this.$message({
             type: 'info',
@@ -271,6 +273,4 @@ export default {
   }
 }
 </script>
-
-
 

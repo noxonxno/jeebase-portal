@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 export function selectLapiList(data) {
-    return request({
-      url: '/api/apiList',
-      method: 'get',
-      params: data
-    })
+  return request({
+    url: '/api/apiList',
+    method: 'get',
+    params: data
+  })
 }
 
 export function addApiInfo(data) {
