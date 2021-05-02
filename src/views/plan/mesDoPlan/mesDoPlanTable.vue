@@ -6,8 +6,8 @@
                :model="parameterDto"
                class="demo-form-inline"
                @keyup.enter.native="loadPageTableList">
-        <el-input v-model="parameterDto.deviceName"
-                  placeholder="MES通知总计划数"
+        <el-input v-model="parameterDto.planCode"
+                  placeholder="MES可执行计划编号"
                   style="width: 150px;"
                   class="filter-item"
                   maxlength="32" />
@@ -56,7 +56,7 @@
       </el-table-column>
     </el-table>
     <!-- 详情弹窗 -->
-    <el-dialog title="计划通知详情"
+    <!-- <el-dialog title="计划通知详情"
                :visible.sync="detailsVisible"
                width="30%"
                :before-close="handleClose">
@@ -100,7 +100,7 @@
         <el-button type="primary"
                    @click="detailsVisible = false">退 出</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
     <!-- 分页插件 -->
     <pagination v-show="total>0"
                 :total="total"
@@ -130,11 +130,6 @@ export default {
     },
     dialogStatus: '',
     dialogFormVisible: false,
-    submitForm: {
-      deviceCode: "",
-      deviceName: "",
-      deviceState: ""
-    }
   }),
   directives: {
     waves

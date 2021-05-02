@@ -211,11 +211,6 @@ export default {
       current: 1,
       size: 10,
     },
-    submitForm: {
-      deviceCode: "",
-      deviceName: "",
-      deviceState: ""
-    }
   }),
   directives: {
     waves
