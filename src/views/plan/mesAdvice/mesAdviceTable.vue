@@ -32,11 +32,11 @@
                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                    :auto-upload="false">
           <el-button type="primary">导入</el-button>
-          <el-link href="src/template/xxx.xlsx"
-                   style="margin-left: 8px;">
-            <el-button type="primary">模板下载</el-button>
-          </el-link>
         </el-upload>
+        <!-- <el-link download="F:\idea_space\jeebase-portal\src\template\xxx.xlsx"
+                 style="margin-left: 8px;">
+          <el-button type="primary">模板下载</el-button>
+        </el-link> -->
       </div>
     </div>
     <!-- 表单信息 -->
@@ -101,7 +101,7 @@
     <!-- 详情弹窗 -->
     <el-dialog title="计划通知详情"
                :visible.sync="detailsVisible"
-               width="30%"
+               width="70%"
                :before-close="handleClose">
       <el-table :data="mesAdviceDetailList"
                 row-key="id"
@@ -290,7 +290,6 @@ export default {
     importf (obj) {
       this.dialogVisible = true;
       let _this = this;
-      let inputDOM = this.$refs.inputer;   // 通过DOM取文件数据
       this.file = event.currentTarget.files[0];
       var rABS = false; //是否将文件读取为二进制字符串
       var f = this.file;
@@ -299,10 +298,8 @@ export default {
       FileReader.prototype.readAsBinaryString = function (f) {
         var binary = "";
         var rABS = false; //是否将文件读取为二进制字符串
-        var pt = this;
         var wb; //读取完成的数据
         var outdata;
-        var reader = new FileReader();
         reader.onload = function (e) {
           var bytes = new Uint8Array(reader.result);
           var length = bytes.byteLength;
@@ -327,7 +324,6 @@ export default {
             // let jsonString = JSON.stringify(v).replace(/\*/g, '').replace(/\s/ig,'');
             let jsonString = JSON.stringify(v).replace(/\//g, '').replace(/\s/ig, '');
             debugger;
-            console.log(jsonString);
             v = JSON.parse(jsonString);
             let obj = {}
             //xxx代表列名
