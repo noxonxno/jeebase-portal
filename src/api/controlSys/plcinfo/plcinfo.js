@@ -31,3 +31,10 @@ export function deletePlcInfo(plcId) {
   })
 }
 
+export function selectDeviceCodeMap() {
+  return request({
+    url: '/device/selectDeviceCodeMap',
+    method: 'post'
+  })
+}
+

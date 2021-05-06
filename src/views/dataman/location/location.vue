@@ -15,8 +15,8 @@
         </template>
       </el-table-column>
       <el-table-column label="库位状态">
-        <template  slot-scope="scope">
-          {{ scope.row.locationState==0 ?"正常":"异常" }}
+        <template slot-scope="scope">
+          {{ scope.row.locationState ==0 ?"正常":"异常" }}
         </template>
       </el-table-column>
       <el-table-column label="库位型号">
@@ -62,13 +62,13 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="submitForm" :model="submitForm" label-width="100px" class="organizationForm" style="width: 400px; margin-left:50px;">
-        <el-form-item label="库存型号" prop="steelType">
+        <el-form-item label="库存型号" prop="steelType" label-width="110px">
           <el-input v-model.trim="submitForm.steelType" placeholder="输入库存型号" maxlength="32" />
         </el-form-item>
-        <el-form-item label="最大库存数量" prop="locationMaxNum">
+        <el-form-item label="最大库存数量" prop="locationMaxNum" label-width="110px">
           <el-input v-model.trim="submitForm.locationMaxNum" oninput="value=value.replace(/^\.+|[^\d.]/g,'')" placeholder="输入最大库存数量" />
         </el-form-item>
-        <el-form-item label="库存数量" prop="locationTotal">
+        <el-form-item label="库存数量" prop="locationTotal" label-width="110px">
           <el-input v-model.trim="submitForm.locationTotal" oninput="value=value.replace(/^\.+|[^\d.]/g,'')" placeholder="输入库存数量" />
         </el-form-item>
       </el-form>
@@ -141,7 +141,7 @@ export default {
     },
     createData() {
       addLocation(this.submitForm).then(response => {
-        if (response.code == 200) {
+        if (response.code === 200) {
           this.$message({
             message: '新增成功',
             type: 'success'
@@ -164,7 +164,7 @@ export default {
     },
     updateData() {
       updateLocation(this.submitForm).then(response => {
-        if (response.code == 200) {
+        if (response.code === 200) {
           this.$message({
             message: '修改成功',
             type: 'success'
@@ -192,7 +192,7 @@ export default {
       ).then(() => {
         this.listLoading = true
         removeLocation(id).then(response => {
-          if (response.code == 200) {
+          if (response.code === 200) {
             this.listLoading = false
             this.loadPageTableList()
             this.$message({

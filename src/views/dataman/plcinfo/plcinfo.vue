@@ -45,7 +45,9 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="submitForm" :model="submitForm" label-width="100px" class="organizationForm" style="width: 400px; margin-left:50px;">
         <el-form-item label="设备编码" prop="deviceCode">
-          <el-input v-model.trim="submitForm.deviceCode" placeholder="输入设备编码" maxlength="32" />
+          <el-select v-model.trim="submitForm.deviceCode" placeholder="请选择">
+            <el-option v-for="item in options" :key="options[item]" :label="item" :value="item" />
+          </el-select>
         </el-form-item>
         <el-form-item label="标识名称" prop="plcName">
           <el-input v-model.trim="submitForm.plcName" placeholder="输入标识名称" maxlength="32" />
@@ -69,7 +71,7 @@
   Auth: Lei.j1ang
   Created: 2018/1/19-14:54
 */
-import { selectListPlcInfo, addPlcInfo, updatePlcInfo, deletePlcInfo } from '@/api/controlSys/plcinfo/plcinfo'
+import { selectListPlcInfo, addPlcInfo, updatePlcInfo, deletePlcInfo, selectDeviceCodeMap } from '@/api/controlSys/plcinfo/plcinfo'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import waves from '@/directive/waves' // 水波纹指令
 
@@ -80,6 +82,7 @@ export default {
     waves
   },
   data: () => ({
+    options: [],
     plcList: [],
     total: 0,
     parameterDto: {
@@ -101,8 +104,14 @@ export default {
   }),
   created() {
     this.loadPageTableList()
+    this.loadDeviceName()
   },
   methods: {
+    loadDeviceName() {
+      selectDeviceCodeMap().then(response => {
+        this.options = response.data
+      })
+    },
     loadPageTableList() {
       this.listLoading = true
       selectListPlcInfo(this.parameterDto).then(response => {
@@ -121,7 +130,7 @@ export default {
     },
     createData() {
       addPlcInfo(this.submitForm).then(response => {
-        if (response.code == 200) {
+        if (response.code === 200) {
           this.$message({
             message: '新增成功',
             type: 'success'
@@ -144,7 +153,7 @@ export default {
     },
     updateData() {
       updatePlcInfo(this.submitForm).then(response => {
-        if (response.code == 200) {
+        if (response.code === 200) {
           this.$message({
             message: '修改成功',
             type: 'success'
@@ -172,7 +181,7 @@ export default {
       ).then(() => {
         this.listLoading = true
         deletePlcInfo(id).then(response => {
-          if (response.code == 200) {
+          if (response.code === 200) {
             this.listLoading = false
             this.loadPageTableList()
             this.$message({

@@ -30,8 +30,8 @@
         </template>
       </el-table-column>
       <el-table-column label="托盘状态">
-        <template  slot-scope="scope">
-          {{ scope.row.taryState==0 ?"正常":"异常" }}
+        <template slot-scope="scope">
+          {{ scope.row.taryState==0 ?"正常":"异常" }}
         </template>
       </el-table-column>
       <el-table-column label="使用次数标记">
@@ -76,10 +76,7 @@
     <pagination v-show="total>0" :total="total" :page.sync="parameterDto.current" :limit.sync="parameterDto.size" @pagination="loadPageTableList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="submitForm" :model="submitForm" label-width="100px" class="organizationForm" style="width: 400px; margin-left:50px;">
-        <!-- <el-form-item label="计划编码" prop="steelType">
-          <el-input v-model.trim="submitForm.steelType" placeholder="输入库存型号" maxlength="32" />
-        </el-form-item> -->
+      <el-form ref="submitForm" :model="submitForm" label-width="120px" class="organizationForm" style="width: 400px; margin-left:50px;">
         <el-form-item label="托盘信息" prop="taryInfo">
           <el-input v-model.trim="submitForm.taryInfo" placeholder="输入托盘信息" maxlength="32" />
         </el-form-item>
@@ -160,7 +157,7 @@ export default {
     },
     createData() {
       addTary(this.submitForm).then(response => {
-        if (response.code == 200) {
+        if (response.code === 200) {
           this.$message({
             message: '新增成功',
             type: 'success'
@@ -183,7 +180,7 @@ export default {
     },
     updateData() {
       updateTary(this.submitForm).then(response => {
-        if (response.code == 200) {
+        if (response.code === 200) {
           this.$message({
             message: '修改成功',
             type: 'success'
@@ -211,7 +208,7 @@ export default {
       ).then(() => {
         this.listLoading = true
         deleteTaryById(id).then(response => {
-          if (response.code == 200) {
+          if (response.code === 200) {
             this.listLoading = false
             this.loadPageTableList()
             this.$message({

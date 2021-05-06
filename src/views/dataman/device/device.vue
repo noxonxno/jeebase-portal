@@ -74,7 +74,7 @@
     <pagination v-show="total>0" :total="total" :page.sync="parameterDto.current" :limit.sync="parameterDto.size" @pagination="loadPageTableList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="submitForm" :model="submitForm" label-width="100px" class="organizationForm" style="width: 400px; margin-left:50px;">
+      <el-form ref="submitForm" :model="submitForm" label-width="100px" class="organizationForm" style="width: 400px; margin-left:50px;" form @submit.prevent="submit">
         <el-form-item label="设备编码" prop="deviceCode">
           <el-input v-model.trim="submitForm.deviceCode" placeholder="输入设备编码" maxlength="32" />
         </el-form-item>
@@ -82,8 +82,9 @@
           <el-input v-model.trim="submitForm.deviceName" placeholder="输入设备名称" maxlength="32" />
         </el-form-item>
         <el-form-item label="设备类型" prop="deviceType">
-          <el-input v-model.trim="submitForm.deviceType" oninput="value=value.replace(/^\.+|[^\d.]/g,'')" placeholder="输入设备类型(输入编号)" />
-          <div class="sub-title" style="color:red">0:辊道   1:天车   2:喷码机   3:切割机   4:举升机   5:小件分拣机器人   6:大件分拣机器人   7:沙光机   8:皮带输送线   9:入筐机器人</div>
+          <el-select v-model.trim="submitForm.deviceType" placeholder="请选择">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -112,6 +113,39 @@ export default {
     waves
   },
   data: () => ({
+    options: [
+      {
+        value: '0',
+        label: '辊道'
+      }, {
+        value: '1',
+        label: '天车'
+      }, {
+        value: '2',
+        label: '喷码机'
+      }, {
+        value: '3',
+        label: '切割机'
+      }, {
+        value: '4',
+        label: '举升机'
+      }, {
+        value: '5',
+        label: '小件分拣机器人'
+      }, {
+        value: '6',
+        label: '大件分拣机器人'
+      }, {
+        value: '7',
+        label: '砂光机'
+      }, {
+        value: '8',
+        label: '皮带输送线'
+      }, {
+        value: '9',
+        label: '入框机器人'
+      }
+    ],
     deviceList: [],
     total: 0,
     parameterDto: {
@@ -128,7 +162,7 @@ export default {
     submitForm: {
       deviceCode: '',
       deviceName: '',
-      deviceState: ''
+      deviceType: ''
     }
   }),
   created() {
@@ -153,7 +187,7 @@ export default {
     },
     createData() {
       addDevice(this.submitForm).then(response => {
-        if (response.code == 200) {
+        if (response.code === 200) {
           this.$message({
             message: '新增成功',
             type: 'success'
@@ -176,7 +210,7 @@ export default {
     },
     updateData() {
       updateDevice(this.submitForm).then(response => {
-        if (response.code == 200) {
+        if (response.code === 200) {
           this.$message({
             message: '修改成功',
             type: 'success'
@@ -204,7 +238,7 @@ export default {
       ).then(() => {
         this.listLoading = true
         deleteDevice(id).then(response => {
-          if (response.code == 200) {
+          if (response.code === 200) {
             this.listLoading = false
             this.loadPageTableList()
             this.$message({

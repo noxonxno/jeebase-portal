@@ -158,7 +158,7 @@ export default {
     },
     createData() {
       addApiInfo(this.submitForm).then(response => {
-        if (response.code == 200) {
+        if (response.code === 200) {
           this.$message({
             message: '新增成功',
             type: 'success'
@@ -181,7 +181,7 @@ export default {
     },
     updateData() {
       updateApiInfo(this.submitForm).then(response => {
-        if (response.code == 200) {
+        if (response.code === 200) {
           this.$message({
             message: '修改成功',
             type: 'success'
@@ -209,7 +209,7 @@ export default {
       ).then(() => {
         this.listLoading = true
         deleteApiInfo(id).then(response => {
-          if (response.code == 200) {
+          if (response.code === 200) {
             this.listLoading = false
             this.loadPageTableList()
             this.$message({
