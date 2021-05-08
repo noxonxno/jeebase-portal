@@ -66,10 +66,10 @@
           <el-input v-model.trim="submitForm.steelType" placeholder="输入库存型号" maxlength="32" />
         </el-form-item>
         <el-form-item label="最大库存数量" prop="locationMaxNum" label-width="110px">
-          <el-input v-model.trim="submitForm.locationMaxNum" oninput="value=value.replace(/^\.+|[^\d.]/g,'')" placeholder="输入最大库存数量" />
+          <el-input v-model.trim="submitForm.locationMaxNum" placeholder="输入最大库存数量" oninput="value=value.replace(/[^0-9]/g,'')" @blur="locationMaxNumFun" />
         </el-form-item>
         <el-form-item label="库存数量" prop="locationTotal" label-width="110px">
-          <el-input v-model.trim="submitForm.locationTotal" oninput="value=value.replace(/^\.+|[^\d.]/g,'')" placeholder="输入库存数量" />
+          <el-input v-model.trim="submitForm.locationTotal" placeholder="输入库存数量" oninput="value=value.replace(/[^0-9]/g,'')" @blur="locationTotalFun" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -123,6 +123,12 @@ export default {
     this.loadPageTableList()
   },
   methods: {
+    locationMaxNumFun(e) {
+      this.submitForm.locationMaxNum = e.target.value
+    },
+    locationTotalFun(e) {
+      this.submitForm.locationTotal = e.target.value
+    },
     loadPageTableList() {
       this.listLoading = true
       selectLocationList(this.parameterDto).then(response => {

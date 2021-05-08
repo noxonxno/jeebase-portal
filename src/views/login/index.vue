@@ -70,7 +70,7 @@
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
 
-      <div style="position:relative">
+      <!-- <div style="position:relative">
         <div class="tips">
           Jeebase 前后端分离开源整合框架
         </div>
@@ -78,11 +78,7 @@
           Copyright © 2012-2018 Jeebase. All Rights Reserved.
         </div>
         <el-input v-show="false" v-model="loginForm.verkey" name="verkey" type="hidden" />
-        <!--
-        <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
-          {{ $t('login.thirdparty') }}
-        </el-button>-->
-      </div>
+      </div> -->
     </el-form>
     <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog">
       {{ $t('login.thirdpartyTips') }}

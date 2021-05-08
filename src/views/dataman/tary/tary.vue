@@ -12,6 +12,7 @@
           oninput="value=value.replace(/[^\d]/g,'')"
           class="filter-item"
           style="width: 150px; margin-left: 100px"
+          @blur="updateTaryFixNumFun"
         />
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="updateTaryFixNum">确定</el-button>
       </el-form>
@@ -81,10 +82,10 @@
           <el-input v-model.trim="submitForm.taryInfo" placeholder="输入托盘信息" maxlength="32" />
         </el-form-item>
         <el-form-item label="托盘使用次数" prop="taryNum">
-          <el-input v-model.trim="submitForm.taryNum" oninput="value=value.replace(/^\.+|[^\d.]/g,'')" placeholder="输入托盘使用次数" />
+          <el-input v-model.trim="submitForm.taryNum" placeholder="输入托盘使用次数" oninput="value=value.replace(/[^0-9]/g,'')" @blur="taryNumFun" />
         </el-form-item>
         <el-form-item label="托盘使用阈值" prop="taryFixNum">
-          <el-input v-model.trim="submitForm.taryFixNum" oninput="value=value.replace(/^\.+|[^\d.]/g,'')" placeholder="输入托盘使用阈值" />
+          <el-input v-model.trim="submitForm.taryFixNum" placeholder="输入托盘使用阈值" oninput="value=value.replace(/[^0-9]/g,'')" @blur="taryFixNumFun" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -130,15 +131,22 @@ export default {
     submitForm: {
       taryInfo: '',
       taryNum: '',
-      taryFixNum: '',
-      locationMaxNum: '',
-      locationTotal: ''
+      taryFixNum: ''
     }
   }),
   created() {
     this.loadPageTableList()
   },
   methods: {
+    updateTaryFixNumFun(e) {
+      this.taryFixNum = e.target.value
+    },
+    taryNumFun(e) {
+      this.submitForm.taryNum = e.target.value
+    },
+    taryFixNumFun(e) {
+      this.submitForm.taryFixNum = e.target.value
+    },
     loadPageTableList() {
       this.listLoading = true
       selectTrayList(this.parameterDto).then(response => {

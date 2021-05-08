@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Jeebase管理系统',
+  title: '湖州管理系统',
 
   /**
    * @type {boolean} true | false

@@ -77,7 +77,7 @@ export default {
     size: '布局大小'
   },
   login: {
-    title: 'Jeebase管理系统登录',
+    title: '湖州管理系统登录',
     logIn: '登录',
     userAccount: '账号',
     userPassword: '密码',
