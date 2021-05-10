@@ -6,9 +6,9 @@
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
+        <!-- <search id="header-search" class="right-menu-item" />
 
-        <error-log class="errLog-container right-menu-item hover-effect" />
+        <error-log class="errLog-container right-menu-item hover-effect" /> -->
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
         <!--
@@ -20,7 +20,7 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <img :src='imgUrl' class="user-avatar">
           <label class="user-account">{{ userAccount }}</label>
           <i class="el-icon-caret-bottom" />
         </div>
@@ -67,7 +67,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
-import Search from '@/components/HeaderSearch'
+// import Search from '@/components/HeaderSearch'
 import { updatePwd, queryUserInfo } from '@/api/system/user'
 
 export default {
@@ -75,8 +75,8 @@ export default {
     Breadcrumb,
     Hamburger,
     ErrorLog,
-    Screenfull,
-    Search
+    Screenfull
+    // Search
   },
   data() {
     var validatePass = (rule, value, callback) => {
@@ -103,7 +103,8 @@ export default {
       changePwdForm: {
         oldPwd: '',
         newPwd: '',
-        newPwdRe: ''
+        newPwdRe: '',
+        imgUrl: ''
       },
       rules: {
         oldPwd: [
@@ -145,6 +146,7 @@ export default {
   },
   created() {
     this.queryData()
+    this.imgUrl = require('@/icons/yonghu.jpg')
   },
   methods: {
     toggleSideBar() {

@@ -1,7 +1,7 @@
 <template>
   <div class="components-container">
     <el-form ref="userForm" :model="userForm" ules="rules" label-width="100px" class="userForm" style="width: 500px; margin-left:50px;">
-      <el-form-item label="用户头像">
+      <!-- <el-form-item label="用户头像">
         <my-upload
           v-model="show"
           :width="300"
@@ -16,7 +16,7 @@
           @crop-upload-fail="cropUploadFail"
         />
         <img :src="userForm.headImgUrl" class="avatar" title="点击修改头像" @click="toggleShow">
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item :label="$t('userTable.userAccount')" prop="userAccount">
         <label>{{ userForm.userAccount }}</label>
       </el-form-item>
