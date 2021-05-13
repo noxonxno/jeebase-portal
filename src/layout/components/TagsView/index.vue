@@ -1,5 +1,5 @@
 <template>
-  <div id="tags-view-container" class="tags-view-container">
+  <div id="tags-view-container" class="tags-view-container" v-if="pcOrMobile">
     <scroll-pane ref="scrollPane" class="tags-view-wrapper">
       <router-link
         v-for="tag in visitedViews"
@@ -38,8 +38,10 @@
 import ScrollPane from './ScrollPane'
 import { generateTitle } from '@/utils/i18n'
 import path from 'path'
+import { getPcOrMobile } from '@/utils/auth'
 
 export default {
+  pcOrMobile: false,
   components: { ScrollPane },
   data() {
     return {
@@ -49,6 +51,9 @@ export default {
       selectedTag: {},
       affixTags: []
     }
+  },
+  created() {
+    this.pcOrMobile = getPcOrMobile()==1?false:true
   },
   computed: {
     visitedViews() {

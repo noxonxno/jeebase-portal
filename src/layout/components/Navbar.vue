@@ -1,64 +1,74 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <div v-if="pcOrMobile">
+      <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+      <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
-    <div class="right-menu">
-      <template v-if="device!=='mobile'">
-        <!-- <search id="header-search" class="right-menu-item" />
+      <div class="right-menu">
+        <template v-if="device!=='mobile'">
+          <!-- <search id="header-search" class="right-menu-item" />
 
-        <error-log class="errLog-container right-menu-item hover-effect" /> -->
+          <error-log class="errLog-container right-menu-item hover-effect" /> -->
 
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
-        <!--
-        <el-tooltip content="Global Size" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
-        -->
-      </template>
+          <screenfull id="screenfull" class="right-menu-item hover-effect" />
+          <!--
+          <el-tooltip content="Global Size" effect="dark" placement="bottom">
+            <size-select id="size-select" class="right-menu-item hover-effect" />
+          </el-tooltip>
+          -->
+        </template>
 
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src='imgUrl' class="user-avatar">
-          <label class="user-account">{{ userAccount }}</label>
-          <i class="el-icon-caret-bottom" />
-        </div>
-        <el-dropdown-menu slot="dropdown">
-          <router-link to="/user/info">
-            <el-dropdown-item>
-              个人信息
+        <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+          <div class="avatar-wrapper">
+            <img :src='imgUrl' class="user-avatar">
+            <label class="user-account">{{ userAccount }}</label>
+            <i class="el-icon-caret-bottom" />
+          </div>
+          <el-dropdown-menu slot="dropdown">
+            <router-link to="/user/info">
+              <el-dropdown-item>
+                个人信息
+              </el-dropdown-item>
+            </router-link>
+            <a href="javascript:;" @click="handleUpdatePwd">
+              <el-dropdown-item>
+                修改密码
+              </el-dropdown-item>
+            </a>
+            <el-dropdown-item divided>
+              <span style="display:block;" @click="logout">安全退出</span>
             </el-dropdown-item>
-          </router-link>
-          <a href="javascript:;" @click="handleUpdatePwd">
-            <el-dropdown-item>
-              修改密码
-            </el-dropdown-item>
-          </a>
-          <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">安全退出</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </div>
-    <el-dialog :visible.sync="dialogFormVisible" title="修改密码" width="35%">
-      <el-form ref="changePwdForm" :model="changePwdForm" :rules="rules" label-width="100px" class="changePwdForm">
-        <el-form-item label="旧密码" prop="oldPwd">
-          <el-input v-model="changePwdForm.oldPwd" placeholder="输入旧密码" maxlength="32" type="password" />
-        </el-form-item>
-        <el-form-item label="新密码" prop="newPwd">
-          <el-input v-model="changePwdForm.newPwd" placeholder="输入新密码" maxlength="32" type="password" />
-        </el-form-item>
-        <el-form-item label="新密码" prop="newPwdRe">
-          <el-input v-model="changePwdForm.newPwdRe" placeholder="请再次输入新密码" maxlength="32" type="password" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="updatePwdData">确定</el-button>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
-    </el-dialog>
+      <el-dialog :visible.sync="dialogFormVisible" title="修改密码" width="35%">
+        <el-form ref="changePwdForm" :model="changePwdForm" :rules="rules" label-width="100px" class="changePwdForm">
+          <el-form-item label="旧密码" prop="oldPwd">
+            <el-input v-model="changePwdForm.oldPwd" placeholder="输入旧密码" maxlength="32" type="password" />
+          </el-form-item>
+          <el-form-item label="新密码" prop="newPwd">
+            <el-input v-model="changePwdForm.newPwd" placeholder="输入新密码" maxlength="32" type="password" />
+          </el-form-item>
+          <el-form-item label="新密码" prop="newPwdRe">
+            <el-input v-model="changePwdForm.newPwdRe" placeholder="请再次输入新密码" maxlength="32" type="password" />
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取消</el-button>
+          <el-button type="primary" @click="updatePwdData">确定</el-button>
+        </div>
+      </el-dialog>
+    </div>
+    <div v-if="!pcOrMobile" style="line-height:50px">
+        <span style="padding-left:100px;color:red"><b>湖州系统零件人工录入</b></span>
+        <span style="padding-left:30px;">
+          <el-button @click="logout">安全退出</el-button>
+        </span>
+    </div>
   </div>
+
+  
 </template>
 
 <script>
@@ -69,9 +79,11 @@ import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 // import Search from '@/components/HeaderSearch'
 import { updatePwd, queryUserInfo } from '@/api/system/user'
+import { getPcOrMobile } from '@/utils/auth'
 
 export default {
   components: {
+    pcOrMobile: false,
     Breadcrumb,
     Hamburger,
     ErrorLog,
@@ -146,6 +158,7 @@ export default {
   },
   created() {
     this.queryData()
+    this.pcOrMobile = getPcOrMobile() == 1 ? false : true
     this.imgUrl = require('@/icons/yonghu.jpg')
   },
   methods: {
@@ -160,7 +173,12 @@ export default {
         type: 'warning'
       }).then(() => {
         that.$store.dispatch('user/logout').then(() => {
-          that.$router.push(`/login?redirect=${this.$route.fullPath}`)
+          if(getPcOrMobile() == 2 ){
+            that.$router.push(`/login?redirect=${this.$route.fullPath}`)
+          }else{
+             that.$router.push(`/mblogin`)
+          }
+         
         })
       }).catch(() => {
         this.$message({

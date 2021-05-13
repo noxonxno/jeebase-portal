@@ -20,6 +20,11 @@
           <span>{{ scope.row.deviceCode }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="当前值">
+        <template slot-scope="scope">
+          <span>{{ scope.row.plcValue }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="标识名称">
         <template slot-scope="scope">
           <span>{{ scope.row.plcName }}</span>
@@ -48,6 +53,9 @@
           <el-select v-model.trim="submitForm.deviceCode" placeholder="请选择">
             <el-option v-for="item in options" :key="options[item]" :label="item" :value="item" />
           </el-select>
+        </el-form-item>
+        <el-form-item label="当前值" prop="plcValue">
+          <el-input v-model.trim="submitForm.plcValue" placeholder="输入当前值" maxlength="32" />
         </el-form-item>
         <el-form-item label="标识名称" prop="plcName">
           <el-input v-model.trim="submitForm.plcName" placeholder="输入标识名称" maxlength="32" />
@@ -98,6 +106,7 @@ export default {
     dialogFormVisible: false,
     submitForm: {
       deviceCode: '',
+      plcValue: '',
       plcName: '',
       plcNote: ''
     }
@@ -123,6 +132,7 @@ export default {
     handleCreate() {
       this.deviceCode = ''
       this.plcName = ''
+      this.plcValue = ''
       this.plcNote = ''
       this.dialogStatus = 'create'
       this.dialogFormVisible = true

@@ -56,6 +56,11 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/mblogin',
+    component: () => import('@/views/mblogin/index'),
+    hidden: true
+  },
+  {
     path: '/auth-redirect',
     component: () => import('@/views/login/auth-redirect'),
     hidden: true
@@ -94,6 +99,20 @@ export const constantRoutes = [
         component: () => import('@/views/userCenter/userInfo'),
         name: 'userInfo',
         meta: { title: 'userInfo', icon: 'user', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/mb/index',
+    component: Layout,
+    redirect: '/mb/index',
+    hidden: true,
+    children: [
+      {
+        path: '/mb/index',
+        component: () => import('@/views/mb/index'),
+        name: 'mb',
+        meta: { title: 'mobile', icon: 'user' }
       }
     ]
   }

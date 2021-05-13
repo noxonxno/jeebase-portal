@@ -1,5 +1,5 @@
 import { login, logout, getInfo } from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, setPcOrMobile, removePcOrMobile } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const state = {
@@ -34,9 +34,9 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { userAccount, userPassword, vcode, verkey } = userInfo
+    const { userAccount, userPassword, vcode, verkey, pcOrMobile } = userInfo
     return new Promise((resolve, reject) => {
-      login({ userAccount: userAccount.trim(), userPassword: userPassword, vcode: vcode.trim(), verkey: verkey.trim() }).then(response => {
+      login({ userAccount, userPassword, vcode, verkey, pcOrMobile }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data)
         setToken(data)
@@ -52,11 +52,9 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
-
         if (!data) {
           reject('Verification failed, please Login again.')
         }
-
         const { roles, stringResources, userName, headImgUrl, introduction } = data
 
         // roles must be a non-empty array
@@ -84,6 +82,7 @@ const actions = {
         commit('SET_ROLES', [])
         commit('SET_PERMISSIONS', [])
         removeToken()
+        removePcOrMobile()
         resetRouter()
         resolve()
       }).catch(error => {

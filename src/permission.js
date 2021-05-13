@@ -3,12 +3,13 @@ import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
-import { getToken } from '@/utils/auth' // get token from cookie
+import { getToken, setPcOrMobile } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 
+import { isMobile } from '@/api/login'
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
+const whiteList = ['/login', '/auth-redirect', '/mblogin'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
@@ -19,7 +20,16 @@ router.beforeEach(async(to, from, next) => {
 
   // determine whether the user has logged in
   const hasToken = getToken()
-
+  var pcOrMobile = ''
+  if (isMobile()) {
+    // 移动端
+    pcOrMobile = 1
+  } else {
+    // pc
+    pcOrMobile = 2
+  }
+  //将值存进cookie
+  setPcOrMobile(pcOrMobile)
   if (hasToken) {
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
@@ -41,7 +51,6 @@ router.beforeEach(async(to, from, next) => {
 
           // generate accessible routes map based on roles
           const accessResourcesRoutes = await store.dispatch('permission/generateResourcesRoutes', resources)
-
           // dynamically add accessible routes
           router.addRoutes(accessResourcesRoutes)
 
@@ -59,10 +68,22 @@ router.beforeEach(async(to, from, next) => {
     }
   } else {
     /* has no token*/
-
     if (whiteList.indexOf(to.path) !== -1) {
       // in the free login whitelist, go directly
-      next()
+      if (pcOrMobile === 1) {
+        if (to.path !== '/mblogin') {
+          next('/mblogin')
+        } else {
+          next()
+        }
+      } else {
+        if (to.path !== '/login') {
+          next('/login')
+        } else {
+          next()
+        }
+      }
+      NProgress.done()
     } else {
       // other pages that do not have permission to access are redirected to the login page.
       next(`/login?redirect=${to.path}`)

@@ -36,6 +36,10 @@ import * as filters from './filters' // global filters
 *  mockXHR()
 *}
 */
+import Vant from 'vant';
+import 'vant/lib/index.css';
+
+Vue.use(Vant)
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size

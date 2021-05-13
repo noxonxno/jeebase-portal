@@ -126,7 +126,8 @@ export default {
         userAccount: '',
         userPassword: '',
         vcode: '',
-        verkey: ''
+        verkey: '',
+        pcOrMobile: ''
       },
       loginRules: {
         userAccount: [{ required: true, trigger: 'blur', validator: validateUserAccount }],
@@ -208,6 +209,7 @@ export default {
         if (valid) {
           this.loading = true
           this.loginForm.verkey = this.verkey
+          this.loginForm.pcOrMobile = '2'
           this.$store.dispatch('user/login', this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: this.redirect || '/' })

@@ -40,6 +40,11 @@
           <span>{{ scope.row.taryNum }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="使用累计次数">
+        <template slot-scope="scope">
+          <span>{{ scope.row.taryMaxNum }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="使用阈值">
         <template slot-scope="scope">
           <span>{{ scope.row.taryFixNum }}</span>
