@@ -36,8 +36,13 @@ import * as filters from './filters' // global filters
 *  mockXHR()
 *}
 */
+// 引入pc端框架 
 import Vant from 'vant';
 import 'vant/lib/index.css';
+
+//引入图表框架
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 
 Vue.use(Vant)
 
